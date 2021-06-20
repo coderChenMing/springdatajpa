@@ -57,9 +57,11 @@ public class Customer {
      * referencedColumnName：对应主表的主键字段名称
      *
      * */
-    @OneToMany(targetEntity = LinkMan.class)
-    @JoinColumn(name = "lkm_cust_id", referencedColumnName = "cust_id")
+    //@OneToMany(targetEntity = LinkMan.class)
+    //@JoinColumn(name = "lkm_cust_id", referencedColumnName = "cust_id")
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
     private Set<LinkMan> linkMans = new HashSet<LinkMan>();
+
 
     @Override
     public String toString() {

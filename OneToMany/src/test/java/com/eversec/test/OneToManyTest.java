@@ -35,6 +35,10 @@ public class OneToManyTest {
         linkManDao.save(linkMan);
     }
 
+    /*综合比较save和add两个方法
+    * save比add多Hibernate: insert into cst_linkman (lkm_cust_id, lkm_email, lkm_gender, lkm_memo, lkm_name, lkm_phone, lkm_position, lkm_mobile) values (?, ?, ?, ?, ?, ?, ?, ?)
+     多了一条sql，在多的一方维护外键关系比一的一方要好，所以去掉一的一方外键维护
+     * */
     @Test
     @Transactional
     @Rollback(false)
@@ -49,5 +53,32 @@ public class OneToManyTest {
         linkMan.setCustomer(customer);
         customerDao.save(customer);
         linkManDao.save(linkMan);
+    }
+
+    /*级联测试
+      主表保存，从表保存
+      主表删除，从表删除
+      需要在操作主体配置cascade:操作主体就是主表一的一方
+    * */
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void cascadeTest() {
+        Customer customer = new Customer();
+        customer.setCustName("左冷禅");
+        LinkMan linkMan = new LinkMan();
+        linkMan.setLkmName("冲虚道长");
+        //关联关系
+        linkMan.setCustomer(customer);
+        customerDao.save(customer);
+        linkManDao.save(linkMan);
+    }
+
+    /*级联删除测试*/
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void cascadeDelTest() {
+        customerDao.delete(1l);
     }
 }
